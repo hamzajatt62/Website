@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roni's Pizzeria — Wood-Fired Since 1987</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Work+Sans:wght@400;500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --crust: #241409;
+  --crust-soft: #3a2314;
+  --tomato: #c2371f;
+  --tomato-dark: #8d2415;
+  --tomato-glow: #e8532f;
+  --semolina: #f3e3bd;
+  --semolina-deep: #ead2a0;
+  --mozzarella: #fffaf0;
+  --basil: #4c6b3f;
+  --basil-dark: #37502d;
+  --gold: #d99b3f;
+  --ink: #241409;
+  --paper: #fbf6ea;
+  --shadow: rgba(36,20,9,0.25);
+  --radius: 6px;
+  --display: 'Fraunces', serif;
+  --body: 'Work Sans', sans-serif;
+  --script: 'Caveat', cursive;
+}
+
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family: var(--body);
+  color: var(--ink);
+  background: var(--semolina);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%; display:block;}
+a{color:inherit; text-decoration:none;}
+button{font-family:inherit; cursor:pointer; border:none;}
+ul{list-style:none;}
+h1,h2,h3,h4{font-family:var(--display); font-weight:700; color:var(--crust); line-height:1.1;}
+.eyebrow{
+  font-family:var(--body); font-weight:600; letter-spacing:.14em; text-transform:uppercase;
+  font-size:.72rem; color:var(--tomato-dark);
+}
+.container{max-width:1140px; margin:0 auto; padding:0 24px;}
+:focus-visible{outline:3px solid var(--gold); outline-offset:2px;}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+}
+
+/* ============ CHECKER STRIP (signature texture) ============ */
+.checker-strip{
+  height:14px;
+  background-image: repeating-conic-gradient(var(--mozzarella) 0% 25%, var(--tomato) 0% 50%);
+  background-size: 14px 14px;
+  border-top:1px solid var(--crust);
+  border-bottom:1px solid var(--crust);
+}
+
+/* ============ HEADER / NAV ============ */
+header.site-header{
+  position:sticky; top:0; z-index:200;
+  background:var(--crust);
+  border-bottom:4px solid var(--tomato);
+}
+.header-inner{
+  max-width:1140px; margin:0 auto; padding:14px 24px;
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+}
+.brand{display:flex; align-items:center; gap:12px;}
+.brand-mark{width:46px; height:46px; flex-shrink:0;}
+.brand-text{color:var(--semolina);}
+.brand-text .name{
+  font-family:var(--display); font-size:1.35rem; font-weight:700; letter-spacing:.01em;
+  display:block;
+}
+.brand-text .tag{
+  font-family:var(--script); color:var(--gold); font-size:1rem; display:block; margin-top:-4px;
+}
+nav.main-nav ul{display:flex; gap:2px; flex-wrap:wrap;}
+nav.main-nav a{
+  display:inline-block; padding:8px 12px; font-size:.86rem; font-weight:600;
+  color:var(--semolina-deep); border-radius:4px; transition:background .15s, color .15s;
+  position:relative;
+}
+nav.main-nav a:hover{background:rgba(255,255,255,0.08); color:var(--mozzarella);}
+nav.main-nav a.active{color:var(--gold);}
+nav.main-nav a.active::after{
+  content:""; position:absolute; left:12px; right:12px; bottom:2px; height:2px; background:var(--gold);
+}
+.header-actions{display:flex; align-items:center; gap:10px;}
+.cart-btn{
+  background:var(--tomato); color:var(--mozzarella); padding:9px 14px; border-radius:20px;
+  font-weight:700; font-size:.85rem; display:flex; align-items:center; gap:8px;
+  box-shadow:0 3px 0 var(--tomato-dark);
+  transition:transform .1s;
+}
+.cart-btn:hover{transform:translateY(-1px);}
+.cart-btn:active{transform:translateY(2px); box-shadow:0 1px 0 var(--tomato-dark);}
+.cart-count{
+  background:var(--mozzarella); color:var(--tomato-dark); border-radius:50%;
+  width:20px; height:20px; display:inline-flex; align-items:center; justify-content:center;
+  font-size:.72rem; font-weight:800;
+}
+.nav-toggle{display:none; background:none; color:var(--semolina); font-size:1.5rem;}
+
+@media (max-width:880px){
+  nav.main-nav{
+    position:absolute; top:100%; left:0; right:0; background:var(--crust);
+    max-height:0; overflow:hidden; transition:max-height .25s ease;
+    border-bottom:4px solid var(--tomato);
+  }
+  nav.main-nav.open{max-height:420px;}
+  nav.main-nav ul{flex-direction:column; padding:8px 24px 18px;}
+  .nav-toggle{display:block;}
+  header.site-header{position:sticky;}
+}
+
+/* ============ PAGES ============ */
+main{min-height:60vh;}
+.page{display:none; animation:fadeIn .35s ease;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+/* ---- HERO ---- */
+.hero{
+  background:
+    radial-gradient(circle at 82% 20%, rgba(217,155,63,0.25), transparent 45%),
+    linear-gradient(180deg, var(--crust) 0%, var(--crust-soft) 100%);
+  color:var(--semolina);
+  padding:76px 0 90px;
+  position:relative;
+  overflow:hidden;
+}
+.hero-grid{
+  display:grid; grid-template-columns:1.1fr .9fr; gap:40px; align-items:center;
+  max-width:1140px; margin:0 auto; padding:0 24px; position:relative; z-index:2;
+}
+.hero h1{
+  font-size:clamp(2.4rem, 5vw, 3.6rem); color:var(--mozzarella); font-style:italic;
+  margin-bottom:18px;
+}
+.hero h1 span{color:var(--gold); font-style:normal;}
+.hero p.lede{font-size:1.08rem; color:var(--semolina-deep); max-width:46ch; margin-bottom:28px;}
+.hero-ctas{display:flex; gap:14px; flex-wrap:wrap;}
+.btn{
+  display:inline-block; padding:13px 26px; border-radius:30px; font-weight:700; font-size:.92rem;
+  transition:transform .12s, box-shadow .12s;
+}
+.btn-primary{background:var(--tomato); color:var(--mozzarella); box-shadow:0 4px 0 var(--tomato-dark);}
+.btn-primary:hover{transform:translateY(-2px);}
+.btn-primary:active{transform:translateY(2px); box-shadow:0 1px 0 var(--tomato-dark);}
+.btn-outline{border:2px solid var(--semolina-deep); color:var(--semolina); background:transparent;}
+.btn-outline:hover{background:rgba(255,255,255,.08);}
+
+/* CSS pizza illustration */
+.pizza-wrap{display:flex; justify-content:center; align-items:center;}
+.css-pizza{
+  width:280px; height:280px; border-radius:50%; position:relative;
+  background: radial-gradient(circle at 50% 50%, var(--gold) 0%, var(--gold) 66%, #b97a2c 68%, #b97a2c 100%);
+  box-shadow: 0 20px 50px rgba(0,0,0,.45), inset 0 0 0 10px rgba(201,140,50,.5);
+  animation: spin 26s linear infinite;
+}
+@keyframes spin{from{transform:rotate(0)} to{transform:rotate(360deg)}}
+.css-pizza::before{
+  content:""; position:absolute; inset:14%; border-radius:50%;
+  background: radial-gradient(circle at 40% 35%, #d8492c, var(--tomato) 60%);
+}
+.topping{position:absolute; border-radius:50%; background:#8e2a1c; width:26px; height:26px; box-shadow:inset -3px -3px 0 rgba(0,0,0,.15);}
+.topping.basil-leaf{background:var(--basil); border-radius:0 60% 0 60%; width:22px; height:14px;}
+.t1{top:20%; left:32%;} .t2{top:32%; left:60%;} .t3{top:55%; left:22%;}
+.t4{top:60%; left:52%;} .t5{top:38%; left:42%;} .t6{top:70%; left:38%;}
+.t7{top:24%; left:55%;} .t8{top:48%; left:65%;}
+
+/* ---- SECTION HEADERS ---- */
+.section{padding:76px 0;}
+.section-head{max-width:640px; margin:0 auto 44px; text-align:center;}
+.section-head h2{font-size:clamp(1.7rem,3.2vw,2.3rem); margin-top:10px;}
+.section-head p{color:#5c4630; margin-top:12px;}
+.section.alt{background:var(--paper);}
+
+/* ---- FEATURED GRID (home) ---- */
+.feature-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
+.feature-card{
+  background:var(--mozzarella); border-radius:var(--radius); padding:26px;
+  box-shadow:0 6px 18px var(--shadow); border:1px solid rgba(36,20,9,.06);
+  transition:transform .18s, box-shadow .18s;
+}
+.feature-card:hover{transform:translateY(-5px); box-shadow:0 14px 28px var(--shadow);}
+.feature-icon{width:52px; height:52px; border-radius:50%; background:var(--tomato); color:var(--mozzarella);
+  display:flex; align-items:center; justify-content:center; font-size:1.4rem; margin-bottom:16px;}
+.feature-card h3{font-size:1.15rem; margin-bottom:8px;}
+.feature-card p{color:#5c4630; font-size:.93rem;}
+
+/* ---- SIGNATURE STRIP (home slice-of-the-week) ---- */
+.special-strip{
+  background:var(--basil-dark); color:var(--mozzarella); padding:36px 0; margin:70px 0 0;
+}
+.special-inner{display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;}
+.special-inner .label{font-family:var(--script); font-size:1.6rem; color:var(--gold);}
+.special-inner h3{color:var(--mozzarella); font-size:1.5rem;}
+.special-inner p{color:#d9e6d3; font-size:.9rem; max-width:40ch;}
+
+/* ============ MENU PAGE ============ */
+.menu-tabs{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:40px;}
+.menu-tab{
+  padding:9px 18px; border-radius:20px; background:var(--mozzarella); border:2px solid var(--semolina-deep);
+  font-weight:600; font-size:.85rem; color:var(--crust-soft);
+}
+.menu-tab.active{background:var(--tomato); border-color:var(--tomato); color:var(--mozzarella);}
+.menu-category{margin-bottom:56px;}
+.menu-category-head{display:flex; align-items:baseline; gap:14px; margin-bottom:22px;}
+.menu-category-head h3{font-size:1.5rem;}
+.menu-category-head .rule{flex:1; height:1px; background:repeating-linear-gradient(90deg, var(--crust) 0 6px, transparent 6px 12px);}
+.menu-items{display:grid; grid-template-columns:repeat(2,1fr); gap:18px;}
+.menu-item{
+  background:var(--mozzarella); border-radius:var(--radius); padding:18px 20px;
+  display:flex; gap:16px; align-items:flex-start; box-shadow:0 3px 10px var(--shadow);
+}
+.menu-item .slice{
+  width:52px; height:52px; border-radius:50%; flex-shrink:0;
+  background: radial-gradient(circle at 45% 40%, var(--gold), #b97a2c 75%);
+  position:relative;
+}
+.menu-item .slice::after{content:""; position:absolute; inset:22%; border-radius:50%; background:var(--tomato);}
+.menu-item-body{flex:1;}
+.menu-item-top{display:flex; justify-content:space-between; gap:10px;}
+.menu-item h4{font-size:1.02rem; font-family:var(--display); font-weight:600;}
+.menu-item .price{font-weight:700; color:var(--tomato-dark); white-space:nowrap;}
+.menu-item p{font-size:.85rem; color:#5c4630; margin:6px 0 12px;}
+.add-btn{
+  background:var(--crust); color:var(--semolina); font-size:.78rem; font-weight:700;
+  padding:7px 14px; border-radius:16px; display:inline-flex; align-items:center; gap:6px;
+  transition:background .15s;
+}
+.add-btn:hover{background:var(--tomato);}
+.tag-pill{
+  font-size:.65rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase;
+  background:var(--basil); color:#fff; padding:2px 8px; border-radius:10px; margin-left:8px;
+}
+
+@media (max-width:720px){
+  .feature-grid, .menu-items{grid-template-columns:1fr;}
+  .hero-grid{grid-template-columns:1fr;}
+  .pizza-wrap{order:-1;}
+}
+
+/* ============ ORDER NOW PAGE ============ */
+.order-layout{display:grid; grid-template-columns:1.15fr .85fr; gap:36px; align-items:flex-start;}
+.order-form-card, .ticket{
+  background:var(--mozzarella); border-radius:var(--radius); padding:28px; box-shadow:0 6px 18px var(--shadow);
+}
+.field-row{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px;}
+.field{display:flex; flex-direction:column; gap:6px; margin-bottom:14px;}
+.field label{font-size:.78rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--crust-soft);}
+.field input, .field select, .field textarea{
+  padding:11px 12px; border:2px solid var(--semolina-deep); border-radius:5px; font-family:inherit; font-size:.92rem;
+  background:var(--paper);
+}
+.field input:focus, .field select:focus, .field textarea:focus{border-color:var(--tomato); outline:none;}
+.toggle-group{display:flex; gap:10px; margin-bottom:20px;}
+.toggle-opt{
+  flex:1; text-align:center; padding:12px; border:2px solid var(--semolina-deep); border-radius:6px;
+  font-weight:700; font-size:.88rem; background:var(--paper); color:var(--crust-soft);
+}
+.toggle-opt.active{background:var(--basil); border-color:var(--basil); color:#fff;}
+.submit-order{width:100%; background:var(--tomato); color:var(--mozzarella); padding:15px; border-radius:6px;
+  font-weight:800; font-size:1rem; box-shadow:0 4px 0 var(--tomato-dark); margin-top:6px;}
+.submit-order:hover{filter:brightness(1.05);}
+.submit-order:disabled{background:#b6ab92; box-shadow:none; cursor:not-allowed;}
+
+/* --- Order ticket / cart --- */
+.ticket{
+  font-family:'Work Sans', monospace;
+  position:relative;
+  background:
+    linear-gradient(to bottom, var(--paper) 0, var(--paper) 100%);
+}
+.ticket::after{
+  content:""; position:absolute; left:0; right:0; bottom:-9px; height:18px;
+  background-image: radial-gradient(circle at 10px 0, transparent 9px, var(--semolina) 9.5px);
+  background-size:18px 18px; background-position:left;
+}
+.ticket h3{font-family:var(--display); text-align:center; margin-bottom:4px;}
+.ticket .ticket-sub{text-align:center; font-size:.72rem; color:#8a7355; letter-spacing:.08em; text-transform:uppercase; margin-bottom:18px;}
+.ticket-line{display:flex; justify-content:space-between; gap:8px; padding:9px 0; border-bottom:1px dashed #cbb98a; font-size:.88rem;}
+.ticket-line .name{font-weight:600;}
+.ticket-line .qty-controls{display:flex; align-items:center; gap:8px; margin-top:4px;}
+.qty-btn{
+  width:22px; height:22px; border-radius:50%; background:var(--crust); color:#fff; font-weight:700;
+  display:inline-flex; align-items:center; justify-content:center; font-size:.8rem; line-height:1;
+}
+.remove-link{font-size:.72rem; color:var(--tomato-dark); font-weight:700; text-decoration:underline; margin-left:10px;}
+.ticket-totals{margin-top:16px; padding-top:14px; border-top:2px solid var(--crust);}
+.ticket-totals div{display:flex; justify-content:space-between; font-size:.88rem; padding:3px 0;}
+.ticket-totals .grand{font-weight:800; font-size:1.05rem; margin-top:6px;}
+.empty-cart{text-align:center; padding:30px 10px; color:#8a7355; font-size:.9rem;}
+.empty-cart .ec-icon{font-size:2rem; margin-bottom:10px;}
+
+/* ---- Cart Drawer ---- */
+.drawer-overlay{
+  position:fixed; inset:0; background:rgba(36,20,9,.5); z-index:300; opacity:0; pointer-events:none;
+  transition:opacity .25s;
+}
+.drawer-overlay.open{opacity:1; pointer-events:auto;}
+.cart-drawer{
+  position:fixed; top:0; right:-420px; width:min(420px,92vw); height:100%; background:var(--semolina);
+  z-index:310; box-shadow:-8px 0 30px rgba(0,0,0,.3); transition:right .3s ease;
+  display:flex; flex-direction:column; padding:24px;
+}
+.cart-drawer.open{right:0;}
+.drawer-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;}
+.drawer-close{font-size:1.4rem; background:none; color:var(--crust);}
+.drawer-body{flex:1; overflow-y:auto;}
+.drawer-foot{padding-top:14px;}
+.drawer-foot .btn-primary{width:100%; text-align:center;}
+
+/* ============ TESTIMONIALS ============ */
+.testi-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+.testi-card{
+  background:var(--mozzarella); border-radius:var(--radius); padding:24px; box-shadow:0 6px 18px var(--shadow);
+  position:relative;
+}
+.stars{color:var(--gold); font-size:.95rem; letter-spacing:2px; margin-bottom:10px;}
+.testi-card p.quote{font-size:.92rem; color:var(--crust-soft); margin-bottom:16px; font-style:italic;}
+.testi-author{display:flex; align-items:center; gap:10px;}
+.avatar{
+  width:38px; height:38px; border-radius:50%; background:var(--tomato); color:#fff; font-weight:700;
+  display:flex; align-items:center; justify-content:center; font-size:.85rem; flex-shrink:0;
+}
+.testi-author .who strong{display:block; font-size:.88rem;}
+.testi-author .who span{font-size:.75rem; color:#8a7355;}
+
+/* ============ ABOUT ============ */
+.about-hero{display:grid; grid-template-columns:1fr 1fr; gap:44px; align-items:center;}
+.about-hero .oven-art{
+  aspect-ratio:1/1; border-radius:50%; background: radial-gradient(circle at 35% 30%, var(--gold), var(--tomato-dark) 75%);
+  position:relative; box-shadow:0 20px 40px var(--shadow);
+}
+.about-hero .oven-art::before{
+  content:"🔥"; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:4.5rem;
+}
+.timeline{margin-top:60px; position:relative;}
+.timeline::before{content:""; position:absolute; left:20px; top:0; bottom:0; width:2px; background:var(--semolina-deep);}
+.tl-item{position:relative; padding-left:60px; margin-bottom:34px;}
+.tl-item .tl-dot{
+  position:absolute; left:11px; top:2px; width:18px; height:18px; border-radius:50%; background:var(--tomato);
+  border:3px solid var(--paper);
+}
+.tl-item .tl-year{font-family:var(--display); font-weight:700; color:var(--tomato-dark); font-size:1.1rem;}
+.tl-item p{color:#5c4630; font-size:.92rem; margin-top:4px;}
+
+.values-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:50px;}
+.value-card{text-align:center; padding:10px;}
+.value-card .vi{font-size:2rem; margin-bottom:10px;}
+.value-card h4{font-size:1.05rem; margin-bottom:6px;}
+.value-card p{font-size:.88rem; color:#5c4630;}
+
+/* ============ CUSTOMER SERVICE ============ */
+.cs-grid{display:grid; grid-template-columns:.9fr 1.1fr; gap:40px; align-items:flex-start;}
+.cs-help-card{background:var(--crust); color:var(--semolina); border-radius:var(--radius); padding:28px;}
+.cs-help-card h3{color:var(--mozzarella); margin-bottom:10px;}
+.cs-help-card p{color:var(--semolina-deep); font-size:.9rem; margin-bottom:18px;}
+.cs-help-list li{display:flex; gap:10px; margin-bottom:12px; font-size:.88rem; align-items:flex-start;}
+.cs-help-list li .ic{color:var(--gold); font-weight:700;}
+.faq-item{border-bottom:1px solid var(--semolina-deep);}
+.faq-q{
+  width:100%; text-align:left; padding:18px 6px; background:none; display:flex; justify-content:space-between;
+  align-items:center; font-weight:700; font-size:.96rem; color:var(--crust);
+}
+.faq-q .plus{font-size:1.3rem; color:var(--tomato); transition:transform .2s;}
+.faq-item.open .faq-q .plus{transform:rotate(45deg);}
+.faq-a{max-height:0; overflow:hidden; transition:max-height .25s ease;}
+.faq-a p{padding:0 6px 18px; font-size:.9rem; color:#5c4630;}
+.faq-item.open .faq-a{max-height:220px;}
+
+/* ============ CONTACT ============ */
+.contact-grid{display:grid; grid-template-columns:.8fr 1.2fr; gap:40px;}
+.contact-info-card{background:var(--mozzarella); border-radius:var(--radius); padding:26px; box-shadow:0 6px 18px var(--shadow); margin-bottom:20px;}
+.contact-info-card h4{font-size:.95rem; margin-bottom:6px;}
+.contact-info-card p{font-size:.9rem; color:#5c4630;}
+.hours-table{width:100%; margin-top:8px;}
+.hours-table tr td{padding:4px 0; font-size:.87rem; color:#5c4630;}
+.hours-table tr td:last-child{text-align:right; font-weight:600; color:var(--crust);}
+.map-block{
+  background:repeating-linear-gradient(45deg, var(--semolina-deep), var(--semolina-deep) 10px, var(--semolina) 10px, var(--semolina) 20px);
+  border-radius:var(--radius); height:100%; min-height:280px; display:flex; align-items:center; justify-content:center;
+  border:2px solid var(--semolina-deep); flex-direction:column; gap:6px; color:var(--crust-soft); font-weight:700;
+}
+.map-block .pin{font-size:2rem;}
+.contact-form-card{background:var(--mozzarella); border-radius:var(--radius); padding:28px; box-shadow:0 6px 18px var(--shadow);}
+.form-success{
+  display:none; background:var(--basil); color:#fff; padding:14px 16px; border-radius:6px; margin-top:14px; font-size:.9rem; font-weight:600;
+}
+.form-success.show{display:block;}
+
+@media (max-width:880px){
+  .order-layout, .about-hero, .cs-grid, .contact-grid, .field-row{grid-template-columns:1fr;}
+  .testi-grid, .values-grid{grid-template-columns:1fr 1fr;}
+}
+@media (max-width:560px){
+  .testi-grid, .values-grid{grid-template-columns:1fr;}
+}
+
+/* ============ FOOTER ============ */
+footer{background:var(--crust); color:var(--semolina-deep); padding:50px 0 24px; margin-top:80px;}
+.footer-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:32px; margin-bottom:34px;}
+.footer-grid h5{color:var(--mozzarella); font-size:.85rem; letter-spacing:.06em; text-transform:uppercase; margin-bottom:14px;}
+.footer-grid li{margin-bottom:8px; font-size:.87rem;}
+.footer-grid a:hover{color:var(--gold);}
+.footer-brand p{font-size:.85rem; margin-top:10px; max-width:32ch; color:var(--semolina-deep);}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1); padding-top:20px; text-align:center; font-size:.78rem; color:#a3947e;}
+@media (max-width:720px){.footer-grid{grid-template-columns:1fr 1fr;}}
+
+/* ============ TOAST ============ */
+.toast{
+  position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px); z-index:400;
+  background:var(--crust); color:var(--mozzarella); padding:13px 22px; border-radius:24px; font-size:.88rem;
+  font-weight:600; opacity:0; pointer-events:none; transition:opacity .25s, transform .25s;
+  display:flex; align-items:center; gap:8px; box-shadow:0 8px 24px rgba(0,0,0,.3);
+}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="#home" class="brand" data-nav="home">
+      <svg class="brand-mark" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="32" cy="32" r="30" fill="#d99b3f"/>
+        <circle cx="32" cy="32" r="22" fill="#c2371f"/>
+        <circle cx="24" cy="26" r="4" fill="#8d2415"/>
+        <circle cx="38" cy="24" r="4" fill="#8d2415"/>
+        <circle cx="34" cy="38" r="4" fill="#8d2415"/>
+        <circle cx="22" cy="40" r="3" fill="#4c6b3f"/>
+      </svg>
+      <span class="brand-text">
+        <span class="name">Roni's Pizzeria</span>
+        <span class="tag">wood-fired since 1987</span>
+      </span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">☰</button>
+    <nav class="main-nav" id="mainNav">
+      <ul>
+        <li><a href="#home" data-nav="home">Home</a></li>
+        <li><a href="#menu" data-nav="menu">Menu</a></li>
+        <li><a href="#order" data-nav="order">Order Now</a></li>
+        <li><a href="#testimonials" data-nav="testimonials">Testimonials</a></li>
+        <li><a href="#about" data-nav="about">About Us</a></li>
+        <li><a href="#service" data-nav="service">Customer Service</a></li>
+        <li><a href="#contact" data-nav="contact">Contact Us</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <button class="cart-btn" id="cartOpenBtn">🛒 Cart <span class="cart-count" id="cartCount">0</span></button>
+    </div>
+  </div>
+</header>
+<div class="checker-strip"></div>
+
+<main>
+
+  <!-- ============ HOME ============ -->
+  <section class="page" id="page-home">
+    <div class="hero">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">Rawalpindi's Original Wood-Fired Kitchen</p>
+          <h1>Real dough.<br>Real fire.<br><span>Real Roni's.</span></h1>
+          <p class="lede">Every pie is hand-stretched to order and finished in a 900°F wood-fired oven — the same one Roni built with his own hands back in 1987. No shortcuts, no freezer aisle.</p>
+          <div class="hero-ctas">
+            <a href="#order" data-nav="order" class="btn btn-primary">Order Now</a>
+            <a href="#menu" data-nav="menu" class="btn btn-outline">See the Menu</a>
+          </div>
+        </div>
+        <div class="pizza-wrap">
+          <div class="css-pizza">
+            <div class="topping t1"></div><div class="topping t2"></div><div class="topping t3"></div>
+            <div class="topping t4"></div><div class="topping t5"></div><div class="topping t6"></div>
+            <div class="topping basil-leaf t7"></div><div class="topping basil-leaf t8"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Why people keep coming back</p>
+          <h2>Three things we never compromise on</h2>
+        </div>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🔥</div>
+            <h3>True Wood-Fire</h3>
+            <p>Our oven burns oak and cherry wood, hitting 900°F for a charred, blistered crust in 90 seconds flat.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🌾</div>
+            <h3>48-Hour Dough</h3>
+            <p>Slow cold-fermented for two full days for flavor and a crust that's crisp outside, airy within.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🚴</div>
+            <h3>30-Minute Promise</h3>
+            <p>Order for delivery and it's at your door in 30 minutes or less, or the next one's on us.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="special-strip">
+      <div class="container special-inner">
+        <div>
+          <span class="label">this week's slice —</span>
+          <h3>The Diavola Rossa 🌶️</h3>
+          <p>Spicy soppressata, calabrian chili honey, fresh mozzarella and torn basil. Not for the faint-hearted.</p>
+        </div>
+        <a href="#order" data-nav="order" class="btn btn-primary">Get It Before Sunday</a>
+      </div>
+    </div>
+
+    <section class="section alt">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Loved around town</p>
+          <h2>What our regulars are saying</h2>
+        </div>
+        <div class="testi-grid" id="homeTestimonials"></div>
+        <div style="text-align:center; margin-top:34px;">
+          <a href="#testimonials" data-nav="testimonials" class="btn btn-outline" style="border-color:var(--tomato); color:var(--tomato-dark);">Read All Reviews</a>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <!-- ============ MENU ============ -->
+  <section class="page" id="page-menu">
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Fresh from the wood-fired oven</p>
+          <h2>Our Full Menu</h2>
+          <p>Every pizza is 12", hand-stretched, and fired to order. Ask your server about gluten-free crust or dairy-free cheese.</p>
+        </div>
+        <div class="menu-tabs" id="menuTabs"></div>
+        <div id="menuContent"></div>
+      </div>
+    </section>
+  </section>
+
+  <!-- ============ ORDER NOW ============ -->
+  <section class="page" id="page-order">
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Pickup or delivery</p>
+          <h2>Place Your Order</h2>
+          <p>Add items from the menu, then check out below. Your ticket updates as you go.</p>
+        </div>
+        <div class="order-layout">
+          <div class="order-form-card">
+            <div class="toggle-group">
+              <button class="toggle-opt active" id="optDelivery" type="button">🚴 Delivery</button>
+              <button class="toggle-opt" id="optPickup" type="button">🏠 Pickup</button>
+            </div>
+            <form id="orderForm">
+              <div class="field-row">
+                <div class="field"><label for="ofName">Full Name</label><input id="ofName" required placeholder="Jordan Diaz"></div>
+                <div class="field"><label for="ofPhone">Phone</label><input id="ofPhone" required placeholder="(555) 123-4567"></div>
+              </div>
+              <div class="field" id="addressField"><label for="ofAddress">Delivery Address</label><input id="ofAddress" required placeholder="123 Slice Street, Apt 4B"></div>
+              <div class="field"><label for="ofNotes">Order Notes (optional)</label><textarea id="ofNotes" rows="2" placeholder="Extra napkins, ring the bell, allergies, etc."></textarea></div>
+              <div class="field"><label for="ofTime">Preferred Time</label>
+                <select id="ofTime">
+                  <option>As soon as possible</option>
+                  <option>In 30 minutes</option>
+                  <option>In 1 hour</option>
+                  <option>Schedule for later today</option>
+                </select>
+              </div>
+              <button type="submit" class="submit-order" id="submitOrderBtn" disabled>Add items to your ticket to continue</button>
+            </form>
+          </div>
+          <div class="ticket" id="orderTicket"></div>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <!-- ============ TESTIMONIALS ============ -->
+  <section class="page" id="page-testimonials">
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">In their own words</p>
+          <h2>Reviews From the Neighborhood</h2>
+        </div>
+        <div class="testi-grid" id="fullTestimonials"></div>
+      </div>
+    </section>
+  </section>
+
+  <!-- ============ ABOUT US ============ -->
+  <section class="page" id="page-about">
+    <section class="section">
+      <div class="container">
+        <div class="about-hero">
+          <div>
+            <p class="eyebrow">Our story</p>
+            <h2 style="margin-top:10px;">Roni built the oven before he built the walls</h2>
+            <p style="margin-top:16px; color:#5c4630;">In 1987, Roni Marchetti bricked a wood-fired oven in a rented lot two years before the dining room around it existed — he wanted to get the fire right first. Nearly four decades later, that same oven (patched, loved, and still standing) bakes every pizza we serve. We're still family-run, still cold-fermenting our dough for 48 hours, and still closing the register by hand every night.</p>
+          </div>
+          <div class="oven-art"></div>
+        </div>
+
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-year">1987</div>
+            <p>Roni finishes the wood-fired oven by hand and opens a four-table dining room next to it.</p>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-year">1996</div>
+            <p>The Sunday-night crowd outgrows the dining room; Roni's daughter Lena joins to run the front of house.</p>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-year">2009</div>
+            <p>Roni's Supreme wins the city's "Best Local Pie" reader poll for the first of what would be six times.</p>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-year">2026</div>
+            <p>Now run by Lena and her son Theo, Roni's still fires every pizza in that same brick oven.</p>
+          </div>
+        </div>
+
+        <div class="values-grid">
+          <div class="value-card"><div class="vi">🌱</div><h4>Local First</h4><p>Produce and dairy sourced from growers within 50 miles whenever the season allows.</p></div>
+          <div class="value-card"><div class="vi">👨‍👩‍👧</div><h4>Family Run</h4><p>Three generations of Marchettis have worked the counter — and still do, most nights.</p></div>
+          <div class="value-card"><div class="vi">🤝</div><h4>Community Table</h4><p>We host a free slice night for local schools on the first Monday of every month.</p></div>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <!-- ============ CUSTOMER SERVICE ============ -->
+  <section class="page" id="page-service">
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">We're here to help</p>
+          <h2>Customer Service</h2>
+        </div>
+        <div class="cs-grid">
+          <div class="cs-help-card">
+            <h3>Need a hand with an order?</h3>
+            <p>Our team answers most requests within the hour during business hours.</p>
+            <ul class="cs-help-list">
+              <li><span class="ic">✓</span> Call us directly at (555) 402-7788</li>
+              <li><span class="ic">✓</span> Email help@ronispizzeria.example</li>
+              <li><span class="ic">✓</span> Use the live order tracker link in your confirmation text</li>
+              <li><span class="ic">✓</span> Visit the counter — we'll sort it out on the spot</li>
+            </ul>
+            <a href="#contact" data-nav="contact" class="btn btn-primary">Contact Us</a>
+          </div>
+          <div>
+            <div class="faq-item">
+              <button class="faq-q">How long does delivery usually take? <span class="plus">+</span></button>
+              <div class="faq-a"><p>Most orders arrive within 30 minutes of confirmation. During peak Friday and Saturday evening hours it can run closer to 45 minutes — we'll always tell you upfront if that's the case.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q">Do you offer gluten-free or dairy-free options? <span class="plus">+</span></button>
+              <div class="faq-a"><p>Yes — every pizza on the menu can be made with a gluten-free crust or dairy-free mozzarella for a small upcharge. Just add a note when you order.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q">What's your refund or remake policy? <span class="plus">+</span></button>
+              <div class="faq-a"><p>If anything arrives wrong, cold, or not as ordered, contact us within 24 hours and we'll remake it or refund you in full — no questions asked.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q">Can you cater large events? <span class="plus">+</span></button>
+              <div class="faq-a"><p>Absolutely — we cater everything from office lunches to weddings. Reach out at least 72 hours ahead so we can plan oven time and staffing.</p></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q">Do you list allergen information? <span class="plus">+</span></button>
+              <div class="faq-a"><p>Yes, a full allergen chart is available at the counter and by request from any team member — just ask when you order.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section class="page" id="page-contact">
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Come say hi</p>
+          <h2>Contact Us</h2>
+        </div>
+        <div class="contact-grid">
+          <div>
+            <div class="contact-info-card">
+              <h4>📍 Address</h4>
+              <p>221 Oakwood Lane, Rawalpindi, Punjab</p>
+            </div>
+            <div class="contact-info-card">
+              <h4>📞 Phone &amp; Email</h4>
+              <p>(555) 402-7788<br>help@ronispizzeria.example</p>
+            </div>
+            <div class="contact-info-card">
+              <h4>🕒 Hours</h4>
+              <table class="hours-table">
+                <tr><td>Mon – Thu</td><td>11:00 AM – 10:00 PM</td></tr>
+                <tr><td>Fri – Sat</td><td>11:00 AM – 11:30 PM</td></tr>
+                <tr><td>Sunday</td><td>12:00 PM – 9:00 PM</td></tr>
+              </table>
+            </div>
+          </div>
+          <div>
+            <div class="map-block" style="margin-bottom:20px;">
+              <div class="pin">📍</div>
+              <span>221 Oakwood Lane</span>
+            </div>
+            <div class="contact-form-card">
+              <h3 style="margin-bottom:14px;">Send us a message</h3>
+              <form id="contactForm">
+                <div class="field-row">
+                  <div class="field"><label for="cfName">Name</label><input id="cfName" required></div>
+                  <div class="field"><label for="cfEmail">Email</label><input id="cfEmail" type="email" required></div>
+                </div>
+                <div class="field"><label for="cfSubject">Subject</label><input id="cfSubject" placeholder="Catering question, feedback, etc."></div>
+                <div class="field"><label for="cfMessage">Message</label><textarea id="cfMessage" rows="4" required></textarea></div>
+                <button type="submit" class="btn btn-primary" style="width:100%;">Send Message</button>
+                <div class="form-success" id="contactSuccess">Thanks — your message landed in our inbox. We'll reply within one business day.</div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="name" style="font-family:var(--display); font-size:1.2rem; color:var(--mozzarella);">Roni's Pizzeria</span>
+        <p>Wood-fired pizza, made the same slow way since 1987. Family owned, oven and all.</p>
+      </div>
+      <div>
+        <h5>Explore</h5>
+        <ul>
+          <li><a href="#home" data-nav="home">Home</a></li>
+          <li><a href="#menu" data-nav="menu">Menu</a></li>
+          <li><a href="#about" data-nav="about">About Us</a></li>
+          <li><a href="#testimonials" data-nav="testimonials">Testimonials</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Support</h5>
+        <ul>
+          <li><a href="#order" data-nav="order">Order Now</a></li>
+          <li><a href="#service" data-nav="service">Customer Service</a></li>
+          <li><a href="#contact" data-nav="contact">Contact Us</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Visit</h5>
+        <ul>
+          <li>221 Oakwood Lane</li>
+          <li>(555) 402-7788</li>
+          <li>Open till 11:30pm Fri–Sat</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Roni's Pizzeria. All content on this page is placeholder for demonstration.</div>
+  </div>
+</footer>
+
+<!-- Cart Drawer -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<div class="cart-drawer" id="cartDrawer" aria-label="Shopping cart">
+  <div class="drawer-head">
+    <h3 style="font-family:var(--display);">Your Order</h3>
+    <button class="drawer-close" id="drawerClose" aria-label="Close cart">✕</button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+  <div class="drawer-foot">
+    <a href="#order" data-nav="order" class="btn btn-primary" id="drawerCheckoutBtn">Go to Checkout</a>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============ DATA ============ */
+  const MENU = [
+    { id:'m1', cat:'Classics', name:'Margherita', desc:'San Marzano tomato, fresh mozzarella, basil, olive oil.', price:13.5, tag:null },
+    { id:'m2', cat:'Classics', name:'Pepperoni', desc:'Double pepperoni, house tomato sauce, low-moisture mozzarella.', price:14.5, tag:null },
+    { id:'m3', cat:'Classics', name:'Marinara', desc:'Garlic, oregano, San Marzano tomato — no cheese, all flavor.', price:11.5, tag:'Vegan' },
+    { id:'m4', cat:'Classics', name:'Quattro Formaggi', desc:'Mozzarella, gorgonzola, fontina, and shaved parmesan.', price:15.5, tag:null },
+    { id:'m5', cat:'Specialty', name:"Roni's Supreme", desc:'Pepperoni, sausage, peppers, onion, mushroom, olives.', price:17.5, tag:'Bestseller' },
+    { id:'m6', cat:'Specialty', name:'Diavola Rossa', desc:'Spicy soppressata, calabrian chili honey, mozzarella, basil.', price:16.5, tag:'Spicy' },
+    { id:'m7', cat:'Specialty', name:'Truffle Mushroom', desc:'Wild mushroom blend, truffle oil, fontina, thyme.', price:18.0, tag:null },
+    { id:'m8', cat:'Specialty', name:'BBQ Chicken Ranch', desc:'Smoked chicken, red onion, house BBQ, ranch drizzle.', price:16.5, tag:null },
+    { id:'m9', cat:'Sides', name:'Garlic Knots (6)', desc:'Baked to order, brushed with garlic butter and parsley.', price:6.5, tag:null },
+    { id:'m10', cat:'Sides', name:'Caprese Salad', desc:'Heirloom tomato, fresh mozzarella, basil, balsamic glaze.', price:8.5, tag:null },
+    { id:'m11', cat:'Sides', name:'Bruschetta', desc:'Grilled sourdough, marinated tomato, garlic, basil oil.', price:7.5, tag:null },
+    { id:'m12', cat:'Sides', name:'Buffalo Wings (8)', desc:'Oven-roasted, tossed in classic buffalo, side of ranch.', price:10.5, tag:'Spicy' },
+    { id:'m13', cat:'Desserts', name:'Nutella Calzone', desc:'Folded dough, warm nutella, dusted with powdered sugar.', price:7.0, tag:null },
+    { id:'m14', cat:'Desserts', name:'Tiramisu', desc:'Espresso-soaked ladyfingers, mascarpone, cocoa.', price:6.5, tag:null },
+    { id:'m15', cat:'Desserts', name:'Cannoli (2)', desc:'Crisp shells, sweet ricotta filling, pistachio crumble.', price:6.0, tag:null },
+    { id:'m16', cat:'Drinks', name:'Italian Soda', desc:'Choice of blood orange, lemon, or raspberry.', price:3.5, tag:null },
+    { id:'m17', cat:'Drinks', name:'Craft Beer', desc:'Rotating local tap — ask your server what is pouring.', price:6.0, tag:null },
+    { id:'m18', cat:'Drinks', name:'House Red Wine', desc:'A rustic Sangiovese blend, by the glass.', price:8.0, tag:null },
+    { id:'m19', cat:'Drinks', name:'San Pellegrino', desc:'Sparkling mineral water, 500ml.', price:3.0, tag:null }
+  ];
+  const CATEGORIES = ['Classics','Specialty','Sides','Desserts','Drinks'];
+
+  const TESTIMONIALS = [
+    { name:'Priya K.', initials:'PK', rating:5, text:"The crust has that real char you just can't fake. Diavola Rossa is my new Friday-night order.", meta:'Regular since 2022' },
+    { name:'Marcus T.', initials:'MT', rating:5, text:'Delivery actually arrived in 25 minutes, still hot, and the box wasn\u2019t soggy. Rare these days.', meta:'Delivery customer' },
+    { name:'Amara O.', initials:'AO', rating:4, text:"Quattro Formaggi is dangerously good. Wish the drinks menu was a little bigger, but the food carries it easily.", meta:'Dine-in guest' },
+    { name:'Devon R.', initials:'DR', rating:5, text:'Booked them for our office party of 40 — every pie came out fresh, staggered perfectly, zero complaints.', meta:'Catering client' },
+    { name:'Sana F.', initials:'SF', rating:5, text:"Gluten-free crust doesn't taste like an afterthought here, it actually holds up to the toppings.", meta:'Weekly regular' },
+    { name:'Leo B.', initials:'LB', rating:4, text:'Garlic knots alone are worth the trip. Great spot for a casual family dinner.', meta:'Family of four' }
+  ];
+
+  /* ============ STATE ============ */
+  let cart = {};       // id -> qty
+  let orderType = 'delivery';
+  let activeMenuTab = 'Classics';
+
+  const byId = id => document.getElementById(id);
+  const findItem = id => MENU.find(m => m.id === id);
+  const money = n => '$' + n.toFixed(2);
+
+  /* ============ ROUTING ============ */
+  const pages = ['home','menu','order','testimonials','about','service','contact'];
+  function navigate(page){
+    if(!pages.includes(page)) page = 'home';
+    pages.forEach(p => byId('page-'+p).classList.toggle('active', p===page));
+    document.querySelectorAll('[data-nav]').forEach(el=>{
+      el.classList.toggle('active', el.dataset.nav === page && el.tagName === 'A' && el.closest('nav'));
+    });
+    document.querySelectorAll('nav.main-nav a').forEach(a=>{
+      a.classList.toggle('active', a.dataset.nav === page);
+    });
+    window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+    closeDrawer();
+    closeMobileNav();
+    if(page === 'order') renderTicket();
+    if(location.hash !== '#'+page) history.replaceState(null,'', '#'+page);
+  }
+  document.querySelectorAll('[data-nav]').forEach(el=>{
+    el.addEventListener('click', e=>{
+      e.preventDefault();
+      navigate(el.dataset.nav);
+    });
+  });
+  window.addEventListener('hashchange', ()=> navigate(location.hash.replace('#','')||'home'));
+
+  /* ============ MOBILE NAV ============ */
+  const mainNav = byId('mainNav');
+  byId('navToggle').addEventListener('click', ()=> mainNav.classList.toggle('open'));
+  function closeMobileNav(){ mainNav.classList.remove('open'); }
+
+  /* ============ MENU RENDER ============ */
+  function renderMenuTabs(){
+    const wrap = byId('menuTabs');
+    wrap.innerHTML = CATEGORIES.map(c =>
+      `<button class="menu-tab${c===activeMenuTab?' active':''}" data-cat="${c}">${c}</button>`
+    ).join('');
+    wrap.querySelectorAll('.menu-tab').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        activeMenuTab = btn.dataset.cat;
+        renderMenuTabs();
+        document.getElementById('cat-'+activeMenuTab).scrollIntoView({behavior:'smooth', block:'start'});
+      });
+    });
+  }
+  function renderMenuContent(){
+    const wrap = byId('menuContent');
+    wrap.innerHTML = CATEGORIES.map(cat => `
+      <div class="menu-category" id="cat-${cat}">
+        <div class="menu-category-head"><h3>${cat}</h3><div class="rule"></div></div>
+        <div class="menu-items">
+          ${MENU.filter(m=>m.cat===cat).map(item => `
+            <div class="menu-item">
+              <div class="slice"></div>
+              <div class="menu-item-body">
+                <div class="menu-item-top">
+                  <h4>${item.name}${item.tag?`<span class="tag-pill">${item.tag}</span>`:''}</h4>
+                  <span class="price">${money(item.price)}</span>
+                </div>
+                <p>${item.desc}</p>
+                <button class="add-btn" data-add="${item.id}">＋ Add to Order</button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `).join('');
+    wrap.querySelectorAll('[data-add]').forEach(btn=>{
+      btn.addEventListener('click', ()=> addToCart(btn.dataset.add));
+    });
+  }
+
+  /* ============ CART LOGIC ============ */
+  function addToCart(id){
+    cart[id] = (cart[id]||0) + 1;
+    updateCartUI();
+    showToast(`Added ${findItem(id).name} to your order`);
+  }
+  function changeQty(id, delta){
+    if(!cart[id]) return;
+    cart[id] += delta;
+    if(cart[id] <= 0) delete cart[id];
+    updateCartUI();
+  }
+  function removeItem(id){
+    delete cart[id];
+    updateCartUI();
+  }
+  function cartCount(){ return Object.values(cart).reduce((a,b)=>a+b,0); }
+  function cartSubtotal(){
+    return Object.entries(cart).reduce((sum,[id,qty]) => sum + findItem(id).price*qty, 0);
+  }
+  function updateCartUI(){
+    byId('cartCount').textContent = cartCount();
+    renderDrawer();
+    renderTicket();
+  }
+
+  function lineItemsHTML(editable){
+    const ids = Object.keys(cart);
+    if(ids.length === 0){
+      return `<div class="empty-cart"><div class="ec-icon">🍕</div>No items yet — visit the <a href="#menu" data-nav="menu" style="text-decoration:underline; color:var(--tomato-dark); font-weight:700;">menu</a> to build your order.</div>`;
+    }
+    return ids.map(id=>{
+      const item = findItem(id), qty = cart[id];
+      return `
+        <div class="ticket-line" style="flex-direction:column;">
+          <div style="display:flex; justify-content:space-between; width:100%;">
+            <span class="name">${item.name}</span>
+            <span>${money(item.price*qty)}</span>
+          </div>
+          ${editable ? `
+          <div class="qty-controls">
+            <button class="qty-btn" data-dec="${id}">−</button>
+            <span>${qty}</span>
+            <button class="qty-btn" data-inc="${id}">+</button>
+            <a href="#" class="remove-link" data-remove="${id}">Remove</a>
+          </div>` : `<span style="font-size:.78rem; color:#8a7355;">Qty ${qty}</span>`}
+        </div>`;
+    }).join('');
+  }
+
+  function wireLineActions(container){
+    container.querySelectorAll('[data-inc]').forEach(b=> b.addEventListener('click', ()=>changeQty(b.dataset.inc,1)));
+    container.querySelectorAll('[data-dec]').forEach(b=> b.addEventListener('click', ()=>changeQty(b.dataset.dec,-1)));
+    container.querySelectorAll('[data-remove]').forEach(b=> b.addEventListener('click', e=>{ e.preventDefault(); removeItem(b.dataset.remove); }));
+    container.querySelectorAll('[data-nav]').forEach(el=> el.addEventListener('click', e=>{ e.preventDefault(); navigate(el.dataset.nav); }));
+  }
+
+  function renderDrawer(){
+    const body = byId('drawerBody');
+    const sub = cartSubtotal();
+    body.innerHTML = lineItemsHTML(true) + (cartCount()>0 ? `
+      <div class="ticket-totals">
+        <div><span>Subtotal</span><span>${money(sub)}</span></div>
+      </div>` : '');
+    wireLineActions(body);
+  }
+
+  function renderTicket(){
+    const wrap = byId('orderTicket');
+    const sub = cartSubtotal();
+    const deliveryFee = orderType==='delivery' && cartCount()>0 ? 3.5 : 0;
+    const tax = sub * 0.08;
+    const total = sub + deliveryFee + tax;
+    wrap.innerHTML = `
+      <h3>Roni's Pizzeria</h3>
+      <div class="ticket-sub">order ticket · ${orderType}</div>
+      ${lineItemsHTML(true)}
+      ${cartCount()>0 ? `
+      <div class="ticket-totals">
+        <div><span>Subtotal</span><span>${money(sub)}</span></div>
+        ${orderType==='delivery' ? `<div><span>Delivery Fee</span><span>${money(deliveryFee)}</span></div>` : ''}
+        <div><span>Tax (8%)</span><span>${money(tax)}</span></div>
+        <div class="grand"><span>Total</span><span>${money(total)}</span></div>
+      </div>` : ''}
+    `;
+    wireLineActions(wrap);
+    const submitBtn = byId('submitOrderBtn');
+    if(cartCount() === 0){
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Add items to your ticket to continue';
+    } else {
+      submitBtn.disabled = false;
+      submitBtn.textContent = `Place Order · ${money(total)}`;
+    }
+  }
+
+  /* ============ DRAWER OPEN/CLOSE ============ */
+  const overlay = byId('drawerOverlay'), drawer = byId('cartDrawer');
+  function openDrawer(){ overlay.classList.add('open'); drawer.classList.add('open'); }
+  function closeDrawer(){ overlay.classList.remove('open'); drawer.classList.remove('open'); }
+  byId('cartOpenBtn').addEventListener('click', openDrawer);
+  byId('drawerClose').addEventListener('click', closeDrawer);
+  overlay.addEventListener('click', closeDrawer);
+  byId('drawerCheckoutBtn').addEventListener('click', e=>{ e.preventDefault(); navigate('order'); });
+
+  /* ============ ORDER TYPE TOGGLE ============ */
+  const optDelivery = byId('optDelivery'), optPickup = byId('optPickup'), addressField = byId('addressField');
+  optDelivery.addEventListener('click', ()=>{
+    orderType='delivery'; optDelivery.classList.add('active'); optPickup.classList.remove('active');
+    addressField.style.display=''; byId('ofAddress').required = true;
+    renderTicket();
+  });
+  optPickup.addEventListener('click', ()=>{
+    orderType='pickup'; optPickup.classList.add('active'); optDelivery.classList.remove('active');
+    addressField.style.display='none'; byId('ofAddress').required = false;
+    renderTicket();
+  });
+
+  /* ============ ORDER FORM SUBMIT ============ */
+  byId('orderForm').addEventListener('submit', e=>{
+    e.preventDefault();
+    if(cartCount()===0) return;
+    const name = byId('ofName').value.trim();
+    showToast(`Thanks, ${name.split(' ')[0]}! Your order is fired up and on the way.`);
+    cart = {};
+    updateCartUI();
+    e.target.reset();
+    optDelivery.click();
+    renderTicket();
+  });
+
+  /* ============ CONTACT FORM ============ */
+  byId('contactForm').addEventListener('submit', e=>{
+    e.preventDefault();
+    byId('contactSuccess').classList.add('show');
+    e.target.reset();
+    setTimeout(()=> byId('contactSuccess').classList.remove('show'), 6000);
+  });
+
+  /* ============ FAQ ACCORDION ============ */
+  document.querySelectorAll('.faq-item').forEach(item=>{
+    item.querySelector('.faq-q').addEventListener('click', ()=>{
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+      if(!wasOpen) item.classList.add('open');
+    });
+  });
+
+  /* ============ TESTIMONIALS RENDER ============ */
+  function stars(n){ return '★'.repeat(n) + '☆'.repeat(5-n); }
+  function testiCard(t){
+    return `
+      <div class="testi-card">
+        <div class="stars">${stars(t.rating)}</div>
+        <p class="quote">"${t.text}"</p>
+        <div class="testi-author">
+          <div class="avatar">${t.initials}</div>
+          <div class="who"><strong>${t.name}</strong><span>${t.meta}</span></div>
+        </div>
+      </div>`;
+  }
+  byId('homeTestimonials').innerHTML = TESTIMONIALS.slice(0,3).map(testiCard).join('');
+  byId('fullTestimonials').innerHTML = TESTIMONIALS.map(testiCard).join('');
+
+  /* ============ TOAST ============ */
+  let toastTimer;
+  function showToast(msg){
+    const t = byId('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(()=> t.classList.remove('show'), 2600);
+  }
+
+  /* ============ INIT ============ */
+  renderMenuTabs();
+  renderMenuContent();
+  renderDrawer();
+  navigate(location.hash.replace('#','') || 'home');
+})();
+</script>
+</body>
+</html>
